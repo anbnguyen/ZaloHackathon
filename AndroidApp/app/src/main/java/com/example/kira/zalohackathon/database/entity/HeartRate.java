@@ -13,7 +13,7 @@ import io.realm.annotations.PrimaryKey;
 
 public class HeartRate extends RealmObject {
     @PrimaryKey
-    private String id;
+    private long id;
     private int heartRate;
     private Date timeStamp;
     private User user;
@@ -21,19 +21,15 @@ public class HeartRate extends RealmObject {
     private String userId;
     public HeartRate(){}
     public HeartRate(String id, int heartRate, Date timeStamp, User user, String userId) {
-        this.id = id;
+        this.id = System.currentTimeMillis()/1000;
         this.heartRate = heartRate;
         this.timeStamp = timeStamp;
         this.user = user;
         this.userId = userId;
     }
 
-    public String getId() {
+    public long getId() {
         return id;
-    }
-
-    public void setId(String id) {
-        this.id = id;
     }
 
     public int getHeartRate() {

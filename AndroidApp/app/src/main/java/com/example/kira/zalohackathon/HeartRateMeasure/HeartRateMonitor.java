@@ -200,6 +200,7 @@ public class HeartRateMonitor extends Activity {
                     }
                 }
                 int beatsAvg = (beatsArrayAvg / beatsArrayCnt);
+                //TODO: Kien pls put your code here
                 text.setText(String.valueOf(beatsAvg));
 
                 startTime = System.currentTimeMillis();

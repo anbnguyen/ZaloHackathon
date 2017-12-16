@@ -23,11 +23,6 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.AppCompat.Light.NoActionBar.FullScreen">
         <activity android:name="com.example.kira.zalohackathon.MainActivity">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
 
 
         </activity>
@@ -39,9 +34,8 @@
             android:value="com.samsung.health.heart_rate" />
 		
 		 <activity
-            android:name=".HeartRateMeasure.HeartRateMonitor"
-            android:label="@string/heartRate_measure"
-            android:parentActivityName=".HeartRateMeasure.HeartRateMonitor">
+            android:name="com.example.kira.zalohackathon.HeartRateMeasure.HeartRateMonitor"
+            android:label="@string/heartRate_measure">
         <meta-data
             android:name="android.support.PARENT_ACTIVITY"
             android:value="com.example.kira.zalohackathon.HeartRateMeasure.HeartRateMonitor" />

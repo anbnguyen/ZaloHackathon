@@ -7,6 +7,8 @@ import android.os.Bundle;
 import android.util.Log;
 import android.widget.Toast;
 
+import com.example.kira.zalohackathon.database.RealmController;
+import com.example.kira.zalohackathon.database.entity.HeartRate;
 import com.samsung.android.sdk.healthdata.HealthConnectionErrorResult;
 import com.samsung.android.sdk.healthdata.HealthConstants;
 import com.samsung.android.sdk.healthdata.HealthData;
@@ -16,9 +18,12 @@ import com.samsung.android.sdk.healthdata.HealthDataStore;
 import com.samsung.android.sdk.healthdata.HealthPermissionManager;
 import com.samsung.android.sdk.healthdata.HealthResultHolder;
 
+import java.util.Date;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import io.github.introml.activityrecognition.R;
 
@@ -31,6 +36,7 @@ public class SamsungHealthConnect extends AppCompatActivity {
     private HealthConnectionErrorResult mConnError;
     private Set<HealthPermissionManager.PermissionKey> mKeySet;
      int count = 0;
+     long end_time = 0;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -69,7 +75,7 @@ public class SamsungHealthConnect extends AppCompatActivity {
                     // Request the permission for reading step counts if it is not acquired
                     pmsManager.requestPermissions(mKeySet, SamsungHealthConnect.this).setResultListener(mPermissionListener);
                 } else {
-                    getData();
+                    getHeartRateFromSHealth();
                 }
             } catch (Exception e) {
                 Log.e(APP_TAG, e.getClass().getName() + " - " + e.getMessage());
@@ -143,22 +149,29 @@ public class SamsungHealthConnect extends AppCompatActivity {
                     if (resultMap.containsValue(Boolean.FALSE)) {
                         Toast.makeText(SamsungHealthConnect.this, "Failed to get permission", Toast.LENGTH_SHORT).show();
                     } else {
-                       getData();
+                        TimerTask timerTask = new TimerTask() {
+                            @Override
+                            public void run() {
+                                getHeartRateFromSHealth();
+                            }
+                        };
+                       Timer timer = new Timer();
+                       timer.scheduleAtFixedRate(timerTask, 1000, 5000);
                     }
                 }
 
             };
 
-    private void getData() {
+    private void getHeartRateFromSHealth() {
         HealthDataResolver resolver = new HealthDataResolver(mStore, null);
         // Get the current heart rate and display it
         HealthDataResolver.ReadRequest request = new HealthDataResolver.ReadRequest.Builder()
                 .setDataType(HealthConstants.HeartRate.HEALTH_DATA_TYPE)
-                .setProperties(new String[]{HealthConstants.HeartRate.HEART_RATE})
+                .setProperties(new String[]{HealthConstants.HeartRate.HEART_RATE,HealthConstants.HeartRate.END_TIME})
                 .build();
         try {
             resolver.read(request).setResultListener(mListener);
-            Log.d("Count123123",String.valueOf(count));
+//            Log.d("Count",String.valueOf(count));
         } catch (Exception e) {
             Log.d("ErrorTEST", e.getMessage());
         }
@@ -168,11 +181,22 @@ public class SamsungHealthConnect extends AppCompatActivity {
         @Override
         public void onResult(HealthDataResolver.ReadResult healthData) {
             count = 0;
-
+            end_time = 0;
             try {
                 for (HealthData data : healthData) {
                     count = data.getInt(HealthConstants.HeartRate.HEART_RATE);
+                    end_time = data.getLong(HealthConstants.HeartRate.END_TIME);
                 }
+
+
+                if ( System.currentTimeMillis() - end_time <= 10000){
+                    HeartRate heartRate = new HeartRate("1", count ,new Date(end_time), null ,"1" );
+                    RealmController realm = new RealmController(getApplication());
+                    realm.update(heartRate);
+                    //TODO: Kien pls put your code here
+                    //
+                }
+
             } finally {
                 healthData.close();
             }
