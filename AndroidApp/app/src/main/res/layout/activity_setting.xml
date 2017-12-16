@@ -207,35 +207,35 @@
         android:orientation="vertical">
 
         <ImageButton
-            android:id="@+id/imageButton3"
+            android:id="@+id/btninfo"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@color/colorWhite"
             app:srcCompat="@drawable/btn_info"/>
 
         <ImageButton
-            android:id="@+id/imageButton4"
+            android:id="@+id/btnsetting"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@color/colorWhite"
             app:srcCompat="@drawable/btn_setting"/>
 
         <ImageButton
-            android:id="@+id/imageButton5"
+            android:id="@+id/btnrating"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@color/colorWhite"
             app:srcCompat="@drawable/btn_rating"/>
 
         <ImageButton
-            android:id="@+id/imageButton6"
+            android:id="@+id/btnmonitoring"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@color/colorWhite"
-            app:srcCompat="@drawable/btn_feedback"/>
+            app:srcCompat="@drawable/btn_monitoring"/>
 
         <ImageButton
-            android:id="@+id/imageButton8"
+            android:id="@+id/btnaboutus"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@color/colorWhite"

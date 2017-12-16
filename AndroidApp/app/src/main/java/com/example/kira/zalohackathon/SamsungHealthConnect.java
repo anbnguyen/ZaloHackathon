@@ -1,7 +1,6 @@
 package com.example.kira.zalohackathon;
 
 import android.content.DialogInterface;
-import android.os.Build;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -11,7 +10,6 @@ import android.widget.Toast;
 import com.example.kira.zalohackathon.database.RealmController;
 import com.example.kira.zalohackathon.database.entity.HeartRate;
 import com.example.kira.zalohackathon.database.entity.InvalidWarning;
-import com.example.kira.zalohackathon.database.entity.UserActivity;
 import com.samsung.android.sdk.healthdata.HealthConnectionErrorResult;
 import com.samsung.android.sdk.healthdata.HealthConstants;
 import com.samsung.android.sdk.healthdata.HealthData;
@@ -38,32 +36,32 @@ public class SamsungHealthConnect extends AppCompatActivity {
     private HealthDataStore mStore;
     private HealthConnectionErrorResult mConnError;
     private Set<HealthPermissionManager.PermissionKey> mKeySet;
-    int count = 0;
+    int heartRateCount = 0;
     long end_time = 0;
     int current_activity;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_samsung_health_connect);
-
-        mInstance = this;
-        mKeySet = new HashSet<HealthPermissionManager.PermissionKey>();
-        mKeySet.add(new HealthPermissionManager.PermissionKey(HealthConstants.HeartRate.HEALTH_DATA_TYPE, HealthPermissionManager.PermissionType.READ));
-        HealthDataService healthDataService = new HealthDataService();
-        try {
-            healthDataService.initialize(this);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        mStore = new HealthDataStore(this, mConnectionListener);
-        // Request the connection to the health data store
-        mStore.connectService();
+//        setContentView(R.layout.activity_samsung_health_connect);
+//
+//        mInstance = this;
+//        mKeySet = new HashSet<HealthPermissionManager.PermissionKey>();
+//        mKeySet.add(new HealthPermissionManager.PermissionKey(HealthConstants.HeartRate.HEALTH_DATA_TYPE, HealthPermissionManager.PermissionType.READ));
+//        HealthDataService healthDataService = new HealthDataService();
+//        try {
+//            healthDataService.initialize(this);
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//        }
+//        mStore = new HealthDataStore(this, mConnectionListener);
+//        // Request the connection to the health data store
+//        mStore.connectService();
     }
 
     @Override
     public void onDestroy() {
-        mStore.disconnectService();
+//        mStore.disconnectService();
         super.onDestroy();
     }
     private final HealthDataStore.ConnectionListener mConnectionListener = new HealthDataStore.ConnectionListener() {
@@ -84,7 +82,7 @@ public class SamsungHealthConnect extends AppCompatActivity {
                         @Override
                         public void run() {
                             getHeartRateFromSHealth();
-                            Log.d("Count", String.valueOf(count));
+                            Log.d("Count", String.valueOf(heartRateCount));
                         }
                     };
                     Timer timer = new Timer();
@@ -167,7 +165,7 @@ public class SamsungHealthConnect extends AppCompatActivity {
                             @Override
                             public void run() {
                                 getHeartRateFromSHealth();
-                                Log.d("Count",String.valueOf(count));
+                                Log.d("Count",String.valueOf(heartRateCount));
                             }
                         };
                        Timer timer = new Timer();
@@ -196,19 +194,19 @@ public class SamsungHealthConnect extends AppCompatActivity {
     private final HealthResultHolder.ResultListener<HealthDataResolver.ReadResult> mListener = new HealthResultHolder.ResultListener<HealthDataResolver.ReadResult>() {
         @Override
         public void onResult(HealthDataResolver.ReadResult healthData) {
-            count = 0;
+            heartRateCount = 0;
             end_time = 0;
             final RealmController realm = new RealmController(getApplication());
             current_activity = realm.getCurrentType();
             try {
                 for (HealthData data : healthData) {
-                    count = data.getInt(HealthConstants.HeartRate.HEART_RATE);
+                    heartRateCount = data.getInt(HealthConstants.HeartRate.HEART_RATE);
                     end_time = data.getLong(HealthConstants.HeartRate.END_TIME);
 
                 //if nhip tim bat thuong -> warning
 
                 if ( System.currentTimeMillis() - end_time <= 10000){
-                    HeartRate heartRate = new HeartRate("1", count ,new Date(end_time), null ,"1" );
+                    HeartRate heartRate = new HeartRate(1, SamsungHealthConnect.this.heartRateCount,new Date(end_time), null ,"1" );
                     realm.update(heartRate);
 
                     //TODO: Kien pls put your code here
@@ -228,7 +226,7 @@ public class SamsungHealthConnect extends AppCompatActivity {
                             .setNegativeButton("Không", new DialogInterface.OnClickListener() {
                                 public void onClick(DialogInterface dialog, int which) {
                                     // do nothing
-                                    InvalidWarning invalidWarning = new InvalidWarning("1", current_activity, count);
+                                    InvalidWarning invalidWarning = new InvalidWarning("1", current_activity, SamsungHealthConnect.this.heartRateCount);
                                     realm.update(invalidWarning);
                                 }
                             })

@@ -1,7 +1,9 @@
 package com.example.kira.zalohackathon;
 
 import android.Manifest;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.media.Image;
 import android.content.pm.PackageManager;
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
@@ -11,30 +13,60 @@ import android.os.Bundle;
 import android.speech.tts.TextToSpeech;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
+import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
+import android.widget.ImageButton;
+import android.widget.Toast;
 
 import com.example.kira.zalohackathon.HeartRateMeasure.HeartRateMonitor;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.Date;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 import java.util.Random;
+import java.util.Set;
 import java.util.Timer;
 import java.util.TimerTask;
 
 import com.example.kira.zalohackathon.TensorFlowClassifier;
+
 import com.example.kira.zalohackathon.database.RealmController;
+import com.example.kira.zalohackathon.database.entity.HeartRate;
+import com.example.kira.zalohackathon.database.entity.InvalidWarning;
 import com.example.kira.zalohackathon.database.entity.TempAct;
 import com.example.kira.zalohackathon.database.entity.User;
+import com.samsung.android.sdk.healthdata.HealthConnectionErrorResult;
+import com.samsung.android.sdk.healthdata.HealthConstants;
+import com.samsung.android.sdk.healthdata.HealthData;
+import com.samsung.android.sdk.healthdata.HealthDataResolver;
+import com.samsung.android.sdk.healthdata.HealthDataService;
+import com.samsung.android.sdk.healthdata.HealthDataStore;
+import com.samsung.android.sdk.healthdata.HealthPermissionManager;
+import com.samsung.android.sdk.healthdata.HealthResultHolder;
 
 import io.github.introml.activityrecognition.R;
 import io.realm.RealmResults;
 
 public class MainActivity extends AppCompatActivity implements SensorEventListener, TextToSpeech.OnInitListener {
 
+    public static final String APP_TAG = "ZaloHackathon";
+    private static boolean isConnectedToSHealth = false;
+    private static MainActivity mInstance = null;
+    private HealthDataStore mStore;
+    private HealthConnectionErrorResult mConnError;
+    private Set<HealthPermissionManager.PermissionKey> mKeySet;
+    int heartRateCount = 0;
+    long end_time = 0;
+    int current_activity;
     private static final int MY_PERMISSIONS_REQUEST_READ_CONTACTS = 1;
     Button MeasureButton;
     private Integer[][] init_param;
@@ -54,6 +86,9 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
     private TensorFlowClassifier classifier;
     RealmController realm;
     private String[] labels = {"Downstairs", "Jogging", "Sitting", "Standing", "Upstairs", "Walking"};
+    EditText weight,height,phone,name,birthYear,emergencyName,emergencyPhone;
+    Button save;
+    ImageButton setting,monitoring,aboutus,rating,info;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -61,6 +96,18 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
         setContentView(R.layout.activity_main);
         Init();
         checkPermissions();
+        mInstance = this;
+        mKeySet = new HashSet<HealthPermissionManager.PermissionKey>();
+        mKeySet.add(new HealthPermissionManager.PermissionKey(HealthConstants.HeartRate.HEALTH_DATA_TYPE, HealthPermissionManager.PermissionType.READ));
+        HealthDataService healthDataService = new HealthDataService();
+        try {
+            healthDataService.initialize(this);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        mStore = new HealthDataStore(this, mConnectionListener);
+        // Request the connection to the health data store
+        mStore.connectService();
         init_param = new Integer[][]{{120,110},{140,135},{75,70},{80,77},{130,128},{110,115}};
 
         x = new ArrayList<>();
@@ -85,9 +132,67 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
         realm.update(user);
         RealmResults<User> userRRs= realm.getByName("Duy");
         userRRs.get(0);
+        checkProfileExist();
     }
+
+    private void checkProfileExist() {
+        RealmController realmController = new RealmController(getApplication());
+        RealmResults<User> user = realmController.getUserById("1");
+        if(!user.isEmpty()){
+            User u = user.first();
+            weight.setText(u.getWeight().toString());
+            height.setText(u.getHeight().toString());
+            phone.setText(u.getPhone().toString());
+            name.setText(u.getName().toString());
+            birthYear.setText(String.valueOf(u.getBirthYear()));
+            emergencyPhone.setText(u.getEmergencyPhone().toString());
+            emergencyName.setText(u.getEmergencyName().toString());
+        }
+    }
+
     private void Init() {
-        MeasureButton = (Button) findViewById(R.id.button);
+        weight = (EditText) findViewById(R.id.weight);
+        height = (EditText) findViewById(R.id.height);
+        phone = (EditText) findViewById(R.id.phone);
+        name = (EditText) findViewById(R.id.name);
+        birthYear = (EditText) findViewById(R.id.birthYear);
+        emergencyName = (EditText) findViewById(R.id.emergencyName);
+        emergencyPhone = (EditText) findViewById(R.id.emergencyPhone);
+        setting = (ImageButton) findViewById(R.id.btnsetting);
+        monitoring = (ImageButton) findViewById(R.id.btnmonitoring);
+        aboutus = (ImageButton) findViewById(R.id.btnaboutus);
+        info = (ImageButton) findViewById(R.id.btninfo);
+        rating = (ImageButton) findViewById(R.id.btnrating);
+
+
+        setting.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(MainActivity.this,SettingActivity.class);
+                startActivity(intent);
+            }
+        });
+        monitoring.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(MainActivity.this,MonitoringActivity.class);
+                startActivity(intent);
+            }
+        });
+
+        aboutus.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // do something when the corky is clicked
+
+            }
+        });
+        rating.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // do something when the corky is clicked
+            }
+        });
     }
 
     public void checkPermissions(){
@@ -117,17 +222,31 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
             }
         }
     }
-        public void Measure(View view){
-        Intent HRintent = new Intent(this, HeartRateMonitor.class);
-        startActivity(HRintent);
-    }
 
+    public void Save(View view){
+        User user = new User();
+        user.setName(name.getText().toString());
+        user.setPhone(phone.getText().toString());
+        user.setUserId("1");
+        user.setWeight(Double.valueOf(weight.getText().toString()));
+        user.setHeight(Double.valueOf(height.getText().toString()));
+        user.setBirthYear(Integer.parseInt(birthYear.getText().toString()));
+        user.setEmergencyName(name.getText().toString());
+        user.setEmergencyPhone(emergencyPhone.getText().toString());
+        RealmController realmController = new RealmController(getApplication());
+        realmController.update(user);
+        Toast.makeText(this,"Edit Success",Toast.LENGTH_LONG).show();
+
+    }    
+    
     @Override
     public void onInit(int status) {
         Timer timer = new Timer();
         timer.scheduleAtFixedRate(new TimerTask() {
             @Override
             public void run() {
+
+
                 if (results == null || results.length == 0) {
                     return;
                 }
@@ -139,15 +258,48 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
                         max = results[i];
                     }
                 }
-                TempAct tempAct = new TempAct(1,idx);
-                realm.update(tempAct);
+//                TempAct tempAct = new TempAct(1,idx);
+//                realm.update(tempAct);
                 textToSpeech.speak(labels[idx], TextToSpeech.QUEUE_ADD, null, Integer.toString(new Random().nextInt()));
+                if (isConnectedToSHealth) {
+                    getHeartRateFromSHealth();
+                    if ( System.currentTimeMillis() - end_time <= 10000){
+                        HeartRate heartRate = new HeartRate(1, MainActivity.this.heartRateCount,new Date(end_time), null ,"1" );
+                        realm.update(heartRate);
+
+                        //TODO: Kien pls put your code here
+                        // if bat thuong ->
+
+
+                        AlertDialog.Builder builder = new AlertDialog.Builder(getApplicationContext());
+                        builder.setTitle("Cảnh báo")
+                                .setMessage("Nhịp tim của bạn đang tăng cao. Bạn có ổn không?")
+                                .setPositiveButton("Có", new DialogInterface.OnClickListener() {
+                                    public void onClick(DialogInterface dialog, int which) {
+                                        // continue with delete
+                                        dialog.cancel();
+
+                                    }
+                                })
+                                .setNegativeButton("Không", new DialogInterface.OnClickListener() {
+                                    public void onClick(DialogInterface dialog, int which) {
+                                        // do nothing
+                                        InvalidWarning invalidWarning = new InvalidWarning("1", current_activity, MainActivity.this.heartRateCount);
+                                        realm.update(invalidWarning);
+                                    }
+                                })
+                                .setIcon(android.R.drawable.ic_dialog_alert)
+                                .show();
+                    }
+                }
+
+
 
             }
         }, 2000, 5000);
     }
 
-    protected void onPause() {
+        protected void onPause() {
         getSensorManager().unregisterListener(this);
         super.onPause();
     }
@@ -156,6 +308,7 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
         super.onResume();
         getSensorManager().registerListener(this, getSensorManager().getDefaultSensor(Sensor.TYPE_ACCELEROMETER), SensorManager.SENSOR_DELAY_GAME);
     }
+
 
     @Override
     public void onSensorChanged(SensorEvent event) {
@@ -207,9 +360,163 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
         bd = bd.setScale(decimalPlace, BigDecimal.ROUND_HALF_UP);
         return bd.floatValue();
     }
-
+  
     private SensorManager getSensorManager() {
         return (SensorManager) getSystemService(SENSOR_SERVICE);
     }
+    private final HealthDataStore.ConnectionListener mConnectionListener = new HealthDataStore.ConnectionListener() {
 
+        @Override
+        public void onConnected() {
+            Log.d(APP_TAG, "Health data service is connected.");
+            HealthPermissionManager pmsManager = new HealthPermissionManager(mStore);
+
+            try {
+                Map<HealthPermissionManager.PermissionKey, Boolean> resultMap = pmsManager.isPermissionAcquired(mKeySet);
+
+                if (resultMap.containsValue(Boolean.FALSE)) {
+                    isConnectedToSHealth = false;
+                    // Request the permission for reading step counts if it is not acquired
+                    pmsManager.requestPermissions(mKeySet, MainActivity.this).setResultListener(mPermissionListener);
+                } else {
+                    isConnectedToSHealth = true;
+//                    getHeartRateFromSHealth();
+//                    TimerTask timerTask = new TimerTask() {
+//                        @Override
+//                        public void run() {
+//                            getHeartRateFromSHealth();
+//                            Log.d("Count", String.valueOf(heartRateCount));
+//                        }
+//                    };
+//                    Timer timer = new Timer();
+//                    timer.scheduleAtFixedRate(timerTask, 1000, 5000);
+////                    getHeartRateFromSHealth();
+                }
+            } catch (Exception e) {
+                Log.e(APP_TAG, e.getClass().getName() + " - " + e.getMessage());
+                Log.e(APP_TAG, "Permission setting fails.");
+            }
+        }
+
+
+        @Override
+        public void onConnectionFailed(HealthConnectionErrorResult error) {
+            Log.d(APP_TAG, "Health data service is not available.");
+            showConnectionFailureDialog(error);
+        }
+
+        @Override
+        public void onDisconnected() {
+            Log.d(APP_TAG, "Health data service is disconnected.");
+        }
+    };
+    private void showConnectionFailureDialog(HealthConnectionErrorResult error) {
+
+        AlertDialog.Builder alert = new AlertDialog.Builder(this);
+        mConnError = error;
+        String message = "Connection with Samsung Health is not available";
+
+        if (mConnError.hasResolution()) {
+            switch(error.getErrorCode()) {
+                case HealthConnectionErrorResult.PLATFORM_NOT_INSTALLED:
+                    message = "Please install Samsung Health";
+                    break;
+                case HealthConnectionErrorResult.OLD_VERSION_PLATFORM:
+                    message = "Please upgrade Samsung Health";
+                    break;
+                case HealthConnectionErrorResult.PLATFORM_DISABLED:
+                    message = "Please enable Samsung Health";
+                    break;
+                case HealthConnectionErrorResult.USER_AGREEMENT_NEEDED:
+                    message = "Please agree with Samsung Health policy";
+                    break;
+                default:
+                    message = "Please make Samsung Health available";
+                    break;
+            }
+        }
+
+        alert.setMessage(message);
+
+        alert.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int id) {
+                if (mConnError.hasResolution()) {
+                    mConnError.resolve(mInstance);
+                }
+            }
+        });
+
+        if (error.hasResolution()) {
+            alert.setNegativeButton("Cancel", null);
+        }
+
+        alert.show();
+    }
+    private final HealthResultHolder.ResultListener<HealthPermissionManager.PermissionResult> mPermissionListener =
+            new HealthResultHolder.ResultListener<HealthPermissionManager.PermissionResult>() {
+
+                @Override
+                public void onResult(HealthPermissionManager.PermissionResult result) {
+                    Log.d(APP_TAG, "Permission callback is received.");
+                    Map<HealthPermissionManager.PermissionKey, Boolean> resultMap = result.getResultMap();
+
+                    if (resultMap.containsValue(Boolean.FALSE)) {
+                        Toast.makeText(MainActivity.this, "Failed to get permission", Toast.LENGTH_SHORT).show();
+                    } else {
+                        TimerTask timerTask = new TimerTask() {
+                            @Override
+                            public void run() {
+                                getHeartRateFromSHealth();
+                                Log.d("Count",String.valueOf(heartRateCount));
+                            }
+                        };
+                        Timer timer = new Timer();
+                        timer.scheduleAtFixedRate(timerTask, 1000, 5000);
+                        getHeartRateFromSHealth();
+                    }
+                }
+
+            };
+
+    private void getHeartRateFromSHealth() {
+        HealthDataResolver resolver = new HealthDataResolver(mStore, null);
+        // Get the current heart rate and display it
+        HealthDataResolver.ReadRequest request = new HealthDataResolver.ReadRequest.Builder()
+                .setDataType(HealthConstants.HeartRate.HEALTH_DATA_TYPE)
+                .setProperties(new String[]{HealthConstants.HeartRate.HEART_RATE,HealthConstants.HeartRate.END_TIME})
+                .build();
+        try {
+            resolver.read(request).setResultListener(mListener);
+
+        } catch (Exception e) {
+            Log.d("ErrorTEST", e.getMessage());
+        }
+    }
+
+    private final HealthResultHolder.ResultListener<HealthDataResolver.ReadResult> mListener = new HealthResultHolder.ResultListener<HealthDataResolver.ReadResult>() {
+        @Override
+        public void onResult(HealthDataResolver.ReadResult healthData) {
+            heartRateCount = 0;
+            end_time = 0;
+            final RealmController realm = new RealmController(getApplication());
+            try {
+                for (HealthData data : healthData) {
+                    heartRateCount = data.getInt(HealthConstants.HeartRate.HEART_RATE);
+                    end_time = data.getLong(HealthConstants.HeartRate.END_TIME);
+
+
+
+
+
+                }
+
+            } finally {
+                healthData.close();
+            }
+
+
+        }
+
+    };
 }

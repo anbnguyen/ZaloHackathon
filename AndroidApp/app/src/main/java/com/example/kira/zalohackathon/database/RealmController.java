@@ -34,6 +34,9 @@ public class RealmController {
     public RealmResults<User> getByName(String name){
         return realm.where(User.class).contains("name",name).findAll();
     }
+    public RealmResults<User> getUserById(String userId){
+        return realm.where(User.class).contains("userId",userId).findAll();
+    }
     public RealmResults<HeartRate> getByUserId(String userId){
         return realm.where(HeartRate.class).contains("userId",userId).findAll();
     }

@@ -20,7 +20,7 @@ public class HeartRate extends RealmObject {
     @Index
     private String userId;
     public HeartRate(){}
-    public HeartRate(String id, int heartRate, Date timeStamp, User user, String userId) {
+    public HeartRate(long id, int heartRate, Date timeStamp, User user, String userId) {
         this.id = System.currentTimeMillis()/1000;
         this.heartRate = heartRate;
         this.timeStamp = timeStamp;

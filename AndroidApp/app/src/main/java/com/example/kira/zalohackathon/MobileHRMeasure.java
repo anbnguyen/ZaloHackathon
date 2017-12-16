@@ -9,6 +9,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageButton;
 
 import com.example.kira.zalohackathon.HeartRateMeasure.HeartRateMonitor;
 import com.example.kira.zalohackathon.database.RealmController;
@@ -24,17 +25,16 @@ public class MobileHRMeasure extends AppCompatActivity {
 
     private static final int MY_PERMISSIONS_REQUEST_READ_CONTACTS = 1;
     Button MeasureButton;
-
+    ImageButton setting,monitoring,aboutus,rating,info;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_setting);
+        setContentView(R.layout.activity_mobileheartratemeasure);
         Init();
         checkPermissions();
 
 
     }
-
 
 
     @Override
@@ -44,6 +44,7 @@ public class MobileHRMeasure extends AppCompatActivity {
     }
     private void Init() {
         MeasureButton = (Button) findViewById(R.id.button);
+
     }
 
    /* public void Measure(View view){

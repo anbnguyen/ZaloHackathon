@@ -2,19 +2,22 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="io.github.introml.activityrecognition">
 
-    <uses-feature android:name="android.hardware.sensor.accelerometer" android:required="true" />
-	<uses-feature android:name="android.hardware.camera" />
+    <uses-feature
+        android:name="android.hardware.sensor.accelerometer"
+        android:required="true" />
+    <uses-feature android:name="android.hardware.camera" />
     <uses-feature android:name="android.hardware.camera.flash" />
     <uses-feature
         android:name="@string/step_detector"
         android:required="false" />
     <uses-feature
         android:name="@string/step_counter"
-    android:required="false" />
+        android:required="false" />
 
     <uses-permission android:name="android.permission.CAMERA" />
     <uses-permission android:name="android.permission.WAKE_LOCK" />
     <uses-permission android:name="android.permission.INTERNET" />
+
     <application
         android:allowBackup="true"
         android:icon="@drawable/app_icon"
@@ -23,10 +26,6 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.AppCompat.Light.NoActionBar.FullScreen">
         <activity android:name="com.example.kira.zalohackathon.MainActivity">
-
-
-        </activity>
-        <activity android:name="com.example.kira.zalohackathon.SamsungHealthConnect">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -34,18 +33,22 @@
             </intent-filter>
 
         </activity>
+        <activity android:name="com.example.kira.zalohackathon.SamsungHealthConnect">
+
+        </activity>
+
         <meta-data
             android:name="com.samsung.android.health.permission.read"
             android:value="com.samsung.health.heart_rate" />
-		
-		 <activity
+
+        <activity
             android:name="com.example.kira.zalohackathon.HeartRateMeasure.HeartRateMonitor"
-            android:label="@string/heartRate_measure">
-        <meta-data
-            android:name="android.support.PARENT_ACTIVITY"
-            android:value="com.example.kira.zalohackathon.HeartRateMeasure.HeartRateMonitor" />
-        />
-        </activity>
+            android:label="@string/heartRate_measure" />
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.example.kira.zalohackathon.HeartRateMeasure.HeartRateMonitor" />
+        <activity android:name="com.example.kira.zalohackathon.MonitoringActivity" />
+        <activity android:name="com.example.kira.zalohackathon.SettingActivity"></activity>
     </application>
 
 </manifest>

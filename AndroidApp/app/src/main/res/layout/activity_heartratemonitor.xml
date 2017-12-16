@@ -1,36 +1,141 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-	android:orientation="vertical" 
-	android:layout_width="fill_parent"
-	android:layout_height="fill_parent" 
-	android:id="@+id/layout">
-	<LinearLayout android:id="@+id/top"
-        android:paddingLeft="10dp"
-        android:paddingRight="10dp"
-        android:orientation="horizontal" 
-        android:layout_width="fill_parent"
-        android:layout_height="50dp">
-        <TextView android:id="@+id/text"
-            android:text="@string/default_text"
-            android:textSize="32dp"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content">        
-        </TextView>
-        <RelativeLayout
-	        android:orientation="horizontal" 
-	        android:layout_width="fill_parent"
-	        android:layout_height="fill_parent">
-	        <com.example.kira.zalohackathon.HeartRateMeasure.HeartbeatView
-				android:id="@+id/image"
-	        	android:layout_centerInParent="true"
-	            android:layout_width="wrap_content"
-		        android:layout_height="wrap_content">
-		    </com.example.kira.zalohackathon.HeartRateMeasure.HeartbeatView>
-	    </RelativeLayout>
-    </LinearLayout>
-	<SurfaceView android:id="@+id/preview"
-        android:layout_weight="1" 
-		android:layout_width="fill_parent"
-		android:layout_height="0dp">
-	</SurfaceView>
-</LinearLayout>
+<android.support.v4.widget.DrawerLayout xmlns:android="http://schemas.android.com/apk/res/android"
+	xmlns:app="http://schemas.android.com/apk/res-auto"
+	android:id="@+id/drawer_layout"
+	android:layout_width="match_parent"
+	android:layout_height="match_parent">
+	<!-- The main content view -->
+	<FrameLayout
+		android:id="@+id/content_frame"
+		android:layout_width="match_parent"
+		android:layout_height="match_parent">
+		<LinearLayout
+			xmlns:android="http://schemas.android.com/apk/res/android"
+			xmlns:app="http://schemas.android.com/apk/res-auto"
+			xmlns:tools="http://schemas.android.com/tools"
+			android:layout_width="match_parent"
+			android:layout_height="match_parent"
+			android:orientation="vertical">
+			<LinearLayout
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content"
+				android:background="#00BCD4"
+				android:orientation="horizontal">
+
+				<ImageButton
+					android:id="@+id/imageButton10"
+					android:layout_width="50dp"
+					android:layout_height="50dp"
+					android:background="@color/colorWhite"
+					android:backgroundTint="@android:color/transparent"
+					app:srcCompat="@drawable/ic_menu_white"/>
+
+				<TextView
+					android:layout_width="match_parent"
+					android:layout_height="50dp"
+					android:layout_marginLeft="20dp"
+					android:gravity="center_vertical"
+					android:text="Đo nhịp tim"
+					android:textColor="@color/colorWhite"
+					android:textSize="20dp" />
+			</LinearLayout>
+			<LinearLayout
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content"
+				android:orientation="horizontal"
+				android:background="@color/colorBackGroundBlue">
+				<Button
+					android:layout_weight="0.5"
+					android:layout_height="match_parent"
+					android:backgroundTint="@color/colorWhite"
+					android:textColor="@color/colorBackGroundBlue"
+					android:text="Nhập số đo"/>
+				<Button
+					android:layout_weight="0.5"
+					android:layout_height="match_parent"
+					android:backgroundTint="@color/colorWhite"
+					android:textColor="@color/colorBackGroundBlue"
+					android:text="Đo bằng camera"/>
+			</LinearLayout>
+			<LinearLayout android:id="@+id/top"
+				android:paddingLeft="10dp"
+				android:paddingRight="10dp"
+				android:orientation="vertical"
+				android:layout_width="match_parent"
+				android:layout_weight = "0.5">
+				<RelativeLayout
+					android:orientation="horizontal"
+					android:layout_width="150dp"
+					android:layout_height="150dp"
+					android:gravity = "center"
+					android:layout_gravity="center">
+
+					<com.example.kira.zalohackathon.HeartRateMeasure.HeartbeatView
+						android:id="@+id/image"
+						android:layout_width="wrap_content"
+						android:layout_height="wrap_content"
+						android:layout_alignParentStart="true"
+						android:layout_alignParentTop="true">
+					</com.example.kira.zalohackathon.HeartRateMeasure.HeartbeatView>
+				</RelativeLayout>
+				<TextView android:id="@+id/text"
+					android:text="@string/default_text"
+					android:textSize="50dp"
+					android:layout_gravity="center"
+					android:textColor="@color/colorBackGroundBlue"
+					android:layout_width="wrap_content"
+					android:layout_height="wrap_content">
+				</TextView>
+			</LinearLayout>
+			<SurfaceView android:id="@+id/preview"
+				android:layout_weight="0.5"
+				android:layout_width="match_parent">
+			</SurfaceView>
+		</LinearLayout>
+	</FrameLayout>
+	<!-- The navigation drawer -->
+	<LinearLayout
+		android:layout_width="wrap_content"
+		android:layout_height="match_parent"
+		android:layout_gravity="start"
+		android:background="#FFFFFF"
+		android:orientation="vertical">
+
+		<ImageButton
+			android:id="@+id/btninfo"
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			android:background="@color/colorWhite"
+			app:srcCompat="@drawable/btn_info"/>
+
+		<ImageButton
+			android:id="@+id/btnsetting"
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			android:background="@color/colorWhite"
+			app:srcCompat="@drawable/btn_setting"/>
+
+		<ImageButton
+			android:id="@+id/btnrating"
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			android:background="@color/colorWhite"
+			app:srcCompat="@drawable/btn_rating"/>
+
+		<ImageButton
+			android:id="@+id/btnmonitoring"
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			android:background="@color/colorWhite"
+			app:srcCompat="@drawable/btn_monitoring"/>
+
+		<ImageButton
+			android:id="@+id/btnaboutus"
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			android:background="@color/colorWhite"
+			app:srcCompat="@drawable/btn_about_us"/>
+
+	</LinearLayout>
+
+</android.support.v4.widget.DrawerLayout>

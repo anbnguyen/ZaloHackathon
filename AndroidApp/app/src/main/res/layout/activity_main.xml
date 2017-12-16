@@ -1,17 +1,288 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.v4.widget.DrawerLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/drawer_layout"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context="com.example.kira.zalohackathon.MainActivity">
+    android:layout_height="match_parent">
+    <!-- The main content view -->
+    <FrameLayout
+        android:id="@+id/content_frame"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+            xmlns:app="http://schemas.android.com/apk/res-auto"
+            android:orientation="vertical" android:layout_width="match_parent"
+            android:layout_height="match_parent">
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="#00BCD4"
+                android:orientation="horizontal">
 
-    <Button
-        android:id="@+id/button"
+                <ImageButton
+                    android:id="@+id/imageButton12"
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    android:background="@color/colorWhite"
+                    android:backgroundTint="@android:color/transparent"
+                    app:srcCompat="@drawable/ic_menu_white"/>
+
+                <TextView
+                    android:layout_width="250dp"
+                    android:layout_height="50dp"
+                    android:layout_marginLeft="20dp"
+                    android:text="Thông tin cá nhân"
+                    android:textSize="20dp"
+                    android:textColor="@color/colorWhite"
+                    android:gravity="center_vertical" />
+
+                <ImageButton
+                    android:id="@+id/save"
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    android:layout_weight="1"
+                    android:background="@android:color/transparent"
+                    android:onClick="Save"
+                    app:srcCompat="@drawable/icn_edit" />
+            </LinearLayout>
+            <ImageButton
+                android:id="@+id/imageButton3"
+                android:layout_marginTop="24dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:srcCompat="@drawable/null_avatar"
+                android:background="@android:color/transparent"/>
+
+            <EditText
+                android:id="@+id/name"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:background="@android:color/transparent"
+                android:ems="10"
+                android:hint="Tên bạn"
+                android:inputType="textPersonName"
+                android:textAlignment="center"
+                android:textColor="@color/colorGrey"
+                android:textSize="20dp"
+                android:textStyle="bold" />
+
+            <EditText
+                android:id="@+id/phone"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:background="@android:color/transparent"
+                android:ems="10"
+                android:hint="Số điện thoại"
+                android:inputType="number"
+                android:textAlignment="center"
+                android:textColor="@color/colorGrey"
+                android:textSize="18dp" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/colorBackGroundBlueTenPercent"
+                android:orientation="horizontal"
+                android:layout_marginTop="23dp">
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical"
+                    android:layout_weight="0.33">
+                    <ImageButton
+                        android:id="@+id/imageButton4"
+                        android:layout_marginTop="23dp"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        app:srcCompat="@drawable/icn_height"
+                        android:background="@android:color/transparent"/>
+
+                    <EditText
+                        android:id="@+id/height"
+                        android:layout_width="60dp"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_marginTop="5dp"
+                        android:backgroundTint="@color/colorBackGroundBlue"
+                        android:ems="10"
+                        android:inputType="numberDecimal"
+                        android:text="170"
+                        android:textAlignment="center"
+                        android:textSize="13dp" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical"
+                    android:layout_weight="0.33">
+                    <ImageButton
+                        android:id="@+id/imageButton5"
+                        android:layout_marginTop="23dp"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        app:srcCompat="@drawable/ic_weight"
+                        android:background="@android:color/transparent"/>
+
+                    <EditText
+                        android:id="@+id/weight"
+                        android:layout_width="60dp"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_marginTop="5dp"
+                        android:backgroundTint="@color/colorBackGroundBlue"
+                        android:ems="10"
+                        android:inputType="textPersonName"
+                        android:text="60.5"
+                        android:textAlignment="center"
+                        android:textSize="13dp" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical"
+                    android:layout_weight="0.33">
+                    <ImageButton
+                        android:id="@+id/imageButton6"
+                        android:layout_marginTop="23dp"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        app:srcCompat="@drawable/icn_age"
+                        android:background="@android:color/transparent"/>
+
+                    <EditText
+                        android:id="@+id/birthYear"
+                        android:layout_width="60dp"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_marginTop="5dp"
+                        android:backgroundTint="@color/colorBackGroundBlue"
+                        android:ems="10"
+                        android:inputType="textPersonName"
+                        android:text="1999"
+                        android:textAlignment="center"
+                        android:textSize="13dp" />
+
+                </LinearLayout>
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/textView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Thông tin người liên lạc khẩn cấp"
+                android:textSize="14dp"
+                android:textStyle="bold"
+                android:textColor="@color/colorGrey"/>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+                <TextView
+                    android:id="@+id/textView1"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Tên"
+                    android:textSize="14dp"
+                    android:layout_weight="0.8"
+                    android:textAlignment="center"
+                    android:textColor="@color/colorGrey"/>
+
+                <EditText
+                    android:id="@+id/emergencyName"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="20dp"
+                    android:layout_weight="0.2"
+                    android:backgroundTint="@color/colorBackGroundBlue"
+                    android:ems="10"
+                    android:hint="Tên người liên lạc"
+                    android:inputType="textPersonName"
+                    android:text=""
+                    android:textColor="@color/colorGrey"
+                    android:textSize="14dp" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+                <TextView
+                    android:id="@+id/textView2"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="SĐT"
+                    android:textSize="14dp"
+                    android:layout_weight="0.8"
+                    android:textAlignment="center"
+                    android:textColor="@color/colorGrey"/>
+
+                <EditText
+                    android:id="@+id/emergencyPhone"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="20dp"
+                    android:layout_weight="0.2"
+                    android:backgroundTint="@color/colorBackGroundBlue"
+                    android:ems="10"
+                    android:hint="Số điện thoại người liên lạc"
+                    android:inputType="numberDecimal"
+                    android:text=""
+                    android:textColor="@color/colorGrey"
+                    android:textSize="14dp" />
+            </LinearLayout>
+
+
+        </LinearLayout>
+    </FrameLayout>
+    <!-- The navigation drawer -->
+    <LinearLayout
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:onClick="Measure"
-        android:text="HeartRate"
-        tools:layout_editor_absoluteX="87dp"
-        tools:layout_editor_absoluteY="31dp" />
-</android.support.constraint.ConstraintLayout>
+        android:layout_height="match_parent"
+        android:layout_gravity="start"
+        android:background="#FFFFFF"
+        android:orientation="vertical">
+
+        <ImageButton
+            android:id="@+id/btninfo"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/colorWhite"
+            app:srcCompat="@drawable/btn_info"/>
+
+        <ImageButton
+            android:id="@+id/btnsetting"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/colorWhite"
+            app:srcCompat="@drawable/btn_setting"/>
+
+        <ImageButton
+            android:id="@+id/btnrating"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/colorWhite"
+            app:srcCompat="@drawable/btn_rating"/>
+
+        <ImageButton
+            android:id="@+id/btnmonitoring"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/colorWhite"
+            app:srcCompat="@drawable/btn_monitoring"/>
+
+        <ImageButton
+            android:id="@+id/btnaboutus"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/colorWhite"
+            app:srcCompat="@drawable/btn_about_us"/>
+
+    </LinearLayout>
+
+</android.support.v4.widget.DrawerLayout>
