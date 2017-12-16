@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="#00BCD4"
+        android:orientation="horizontal">
+
+        <ImageButton
+            android:id="@+id/imageButton10"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:background="@color/colorWhite"
+            android:backgroundTint="@android:color/transparent"
+            app:srcCompat="@drawable/ic_menu_white"/>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_marginLeft="20dp"
+            android:gravity="center_vertical"
+            android:text="Đo nhịp tim"
+            android:textColor="@color/colorWhite"
+            android:textSize="20dp" />
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:background="@color/colorBackGroundBlue">
+        <Button
+        android:layout_weight="0.5"
+        android:layout_height="match_parent"
+        android:backgroundTint="@color/colorWhite"
+        android:textColor="@color/colorBackGroundBlue"
+        android:text="Nhập số đo"/>
+        <Button
+            android:layout_weight="0.5"
+            android:layout_height="match_parent"
+            android:backgroundTint="@color/colorWhite"
+            android:textColor="@color/colorBackGroundBlue"
+            android:text="Đo bằng camera"/>
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_weight="0.5"
+        android:background="@color/colorBackGroundBlue"
+        android:orientation="vertical">
+
+        <EditText
+            android:id="@+id/editText7"
+
+            android:layout_width="200dp"
+            android:layout_height="match_parent"
+            android:ems="10"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:textStyle="bold"
+            android:textColor="@color/colorWhite"
+            android:textSize="90dp"
+            android:inputType="number"
+            android:text="120"
+            android:backgroundTint="@android:color/transparent"/>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_weight="0.5"
+        android:orientation="vertical">
+        <TextView
+            android:id="@+id/textView3"
+            android:layout_width="match_parent"
+            android:layout_height="fill_parent"
+            android:gravity="center"
+            android:textStyle="bold"
+            android:textSize="90dp"
+            android:textColor="@color/colorBackGroundBlue"
+            android:text="bpm" />
+    </LinearLayout>
+
+    <ImageButton
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="0.1"
+        android:background="@android:color/transparent"
+        app:srcCompat="@drawable/btn_dang_ki" />
+
+</LinearLayout>
