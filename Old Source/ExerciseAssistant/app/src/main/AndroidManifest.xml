@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.example.nguye.exerciseassistant">
+
+    <uses-feature android:name="android.hardware.camera" />
+    <uses-feature android:name="android.hardware.camera.flash" />
+    <uses-feature
+        android:name="@string/step_detector"
+        android:required="false" />
+    <uses-feature
+        android:name="@string/step_counter"
+        android:required="false" />
+
+    <uses-permission android:name="android.permission.CAMERA" />
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
+    <uses-permission android:name="android.permission.INTERNET" />
+
+    <application
+        android:allowBackup="true"
+        android:icon="@drawable/app_icon"
+        android:label="@string/app_name"
+        android:supportsRtl="true"
+        android:theme="@style/AppTheme">
+        <activity android:name=".MainActivity" />
+        <activity android:name=".Login_Register.LoginActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name=".HeartRateMeasure.HeartRateMonitor"
+            android:label="@string/heartRate_measure"
+            android:parentActivityName=".HeartRateMeasure.HeartRateMonitor">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.example.nguye.exerciseassistant.HeartRateMeasure.HeartRateMonitor" />
+            />
+        </activity>
+        <activity android:name=".ExerciseVideo.ExerciseVideoActivity" />
+        <activity android:name=".Training.Pedometer" />
+        <activity android:name=".MainActivity$Plank_Squat" />
+        <activity android:name=".Training.Plank_Squat" />
+        <activity android:name=".Training.Cycling" />
+        <activity android:name=".ExerciseVideo.Recent_Video" />
+        <activity android:name=".Login_Register.CheckPolicy" />
+        <activity android:name=".Login_Register.Register"></activity>
+    </application>
+
+</manifest>

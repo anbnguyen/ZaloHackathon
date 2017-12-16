@@ -1,0 +1,7 @@
+<resources>
+    <color name="screen_background">#FFFFFF</color>
+    <color name="display_background">#FFFFFF</color>
+    <color name="colorAccent">#00ADEF</color>
+    <color name="colorPrimary">#1DB7F5</color>
+    <color name="colorPrimaryDark">#1DB7F5 </color>
+</resources>

@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="YTube_Key">AIzaSyD4QYaSynZXhs3IeAdntYZpEE3jj1WPvQA</string>
+
+    <string name="ConditionForSignUp">Thank you for using Exercise Assistant and , if applicable, choosing to use our Service. We try to make our Privacy Policy easy to understand so that you are informed as to how we use your information. This information. This Privacy Policy, like our Terms of Service, is an integral part of using our Service; therefore you must completely agree to our Privacy Policy in order to use our Site or Service.</string>
+    <string name="CheckBoxAgree">By clicking next, you agree to our Term of Service and Privacy Policy.</string>
+    <string-array name="Exercise">
+        <item>Choose excercise</item>
+        <item>Plank</item>
+        <item>Walk</item>
+        <item>Squat</item>
+    </string-array>
+</resources>

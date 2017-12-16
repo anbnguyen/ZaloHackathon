@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/activity_main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin"
+    tools:context="com.example.nguye.exerciseassistant.MainActivity">
+
+    <ImageView
+        android:id="@+id/imageView2"
+        android:layout_width="180dp"
+        android:layout_height="180dp"
+        app:srcCompat="@drawable/app_icon"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true" />
+
+    <Spinner
+        android:id="@+id/spinner"
+        android:layout_width="200dp"
+        android:layout_height="wrap_content"
+        android:entries="@array/Exercise"
+        android:layout_marginTop="11dp"
+        android:layout_below="@+id/imageView2"
+        android:layout_centerHorizontal="true" />
+
+    <Button
+        android:id="@+id/videobtn"
+        android:layout_width="240dp"
+        android:layout_height="60dp"
+        android:background="@drawable/btnguide"
+        android:onClick="video"
+        android:layout_marginTop="12dp"
+        android:layout_below="@+id/spinner"
+        android:layout_alignLeft="@+id/recentbtn"
+        android:layout_alignStart="@+id/recentbtn" />
+
+    <Button
+        android:id="@+id/recentbtn"
+        android:layout_width="240dp"
+        android:layout_height="60dp"
+        android:onClick="recent"
+        android:background="@drawable/btnfavorite"
+        android:layout_below="@+id/videobtn"
+        android:layout_centerHorizontal="true" />
+
+    <Button
+        android:id="@+id/trainingbtn"
+        android:layout_width="240dp"
+        android:layout_height="60dp"
+        android:layout_alignLeft="@+id/recentbtn"
+        android:layout_alignStart="@+id/recentbtn"
+        android:layout_below="@+id/recentbtn"
+        android:background="@drawable/btntraining"
+        android:onClick="train" />
+
+    <Button
+        android:id="@+id/viewstatbtn"
+        android:layout_width="240dp"
+        android:layout_height="60dp"
+        android:background="@drawable/btnstat"
+        android:layout_below="@+id/trainingbtn"
+        android:layout_alignLeft="@+id/trainingbtn"
+        android:layout_alignStart="@+id/trainingbtn" />
+
+    <Button
+        android:id="@+id/logoutbtn"
+        android:layout_width="240dp"
+        android:layout_height="60dp"
+        android:layout_alignLeft="@+id/viewstatbtn"
+        android:layout_alignStart="@+id/viewstatbtn"
+        android:layout_below="@+id/viewstatbtn"
+        android:background="@drawable/btnlogout"
+        android:onClick="logout" />
+
+
+</RelativeLayout>
