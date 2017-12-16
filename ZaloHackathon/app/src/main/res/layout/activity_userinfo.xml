@@ -28,13 +28,21 @@
                     app:srcCompat="@drawable/ic_menu_white"/>
 
                 <TextView
-                    android:layout_width="match_parent"
+                    android:layout_width="250dp"
                     android:layout_height="50dp"
                     android:layout_marginLeft="20dp"
                     android:text="Thông tin cá nhân"
                     android:textSize="20dp"
                     android:textColor="@color/colorWhite"
                     android:gravity="center_vertical" />
+
+                <ImageButton
+                    android:id="@+id/imageButton13"
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    android:layout_weight="1"
+                    android:background="@android:color/transparent"
+                    app:srcCompat="@drawable/icn_edit" />
             </LinearLayout>
             <ImageButton
                 android:id="@+id/imageButton3"
