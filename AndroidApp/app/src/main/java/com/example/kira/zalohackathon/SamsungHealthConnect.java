@@ -1,6 +1,7 @@
 package com.example.kira.zalohackathon;
 
 import android.content.DialogInterface;
+import android.os.Build;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -9,6 +10,8 @@ import android.widget.Toast;
 
 import com.example.kira.zalohackathon.database.RealmController;
 import com.example.kira.zalohackathon.database.entity.HeartRate;
+import com.example.kira.zalohackathon.database.entity.InvalidWarning;
+import com.example.kira.zalohackathon.database.entity.UserActivity;
 import com.samsung.android.sdk.healthdata.HealthConnectionErrorResult;
 import com.samsung.android.sdk.healthdata.HealthConstants;
 import com.samsung.android.sdk.healthdata.HealthData;
@@ -35,9 +38,9 @@ public class SamsungHealthConnect extends AppCompatActivity {
     private HealthDataStore mStore;
     private HealthConnectionErrorResult mConnError;
     private Set<HealthPermissionManager.PermissionKey> mKeySet;
-     int count = 0;
-     long end_time = 0;
-
+    int count = 0;
+    long end_time = 0;
+    int current_activity;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -195,17 +198,43 @@ public class SamsungHealthConnect extends AppCompatActivity {
         public void onResult(HealthDataResolver.ReadResult healthData) {
             count = 0;
             end_time = 0;
+            final RealmController realm = new RealmController(getApplication());
+            current_activity = realm.getCurrentType();
             try {
                 for (HealthData data : healthData) {
                     count = data.getInt(HealthConstants.HeartRate.HEART_RATE);
                     end_time = data.getLong(HealthConstants.HeartRate.END_TIME);
-                }
+
+                //if nhip tim bat thuong -> warning
+
                 if ( System.currentTimeMillis() - end_time <= 10000){
                     HeartRate heartRate = new HeartRate("1", count ,new Date(end_time), null ,"1" );
-                    RealmController realm = new RealmController(getApplication());
                     realm.update(heartRate);
+
                     //TODO: Kien pls put your code here
-                    //
+                    // if bat thuong -> 
+
+
+                    AlertDialog.Builder builder = new AlertDialog.Builder(getApplicationContext());
+                    builder.setTitle("Cảnh báo")
+                            .setMessage("Nhịp tim của bạn đang tăng cao. Bạn có ổn không?")
+                            .setPositiveButton("Có", new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int which) {
+                                    // continue with delete
+                                    dialog.cancel();
+
+                                }
+                            })
+                            .setNegativeButton("Không", new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int which) {
+                                    // do nothing
+                                    InvalidWarning invalidWarning = new InvalidWarning("1", current_activity, count);
+                                    realm.update(invalidWarning);
+                                }
+                            })
+                            .setIcon(android.R.drawable.ic_dialog_alert)
+                            .show();
+                }
                 }
 
             } finally {

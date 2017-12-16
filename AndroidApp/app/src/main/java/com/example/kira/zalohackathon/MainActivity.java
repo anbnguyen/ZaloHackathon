@@ -27,6 +27,7 @@ import java.util.TimerTask;
 
 import com.example.kira.zalohackathon.TensorFlowClassifier;
 import com.example.kira.zalohackathon.database.RealmController;
+import com.example.kira.zalohackathon.database.entity.TempAct;
 import com.example.kira.zalohackathon.database.entity.User;
 
 import io.github.introml.activityrecognition.R;
@@ -36,7 +37,7 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
 
     private static final int MY_PERMISSIONS_REQUEST_READ_CONTACTS = 1;
     Button MeasureButton;
-
+    private Integer[][] init_param;
     private static final int N_SAMPLES = 200;
     private static List<Float> x;
     private static List<Float> y;
@@ -60,6 +61,7 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
         setContentView(R.layout.activity_main);
         Init();
         checkPermissions();
+        init_param = new Integer[][]{{120,110},{140,135},{75,70},{80,77},{130,128},{110,115}};
 
         x = new ArrayList<>();
         y = new ArrayList<>();
@@ -137,8 +139,10 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
                         max = results[i];
                     }
                 }
-
+                TempAct tempAct = new TempAct(1,idx);
+                realm.update(tempAct);
                 textToSpeech.speak(labels[idx], TextToSpeech.QUEUE_ADD, null, Integer.toString(new Random().nextInt()));
+
             }
         }, 2000, 5000);
     }

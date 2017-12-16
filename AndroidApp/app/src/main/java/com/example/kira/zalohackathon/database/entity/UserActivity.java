@@ -11,12 +11,21 @@ public class UserActivity extends RealmObject {
     private int type;
     private Double hrmeanPop;
     private Double hrMeanUser;
-
+    private int counter;
     public UserActivity(){};
-    public UserActivity(int type, Double hrmeanPop, Double hrMeanUser) {
+    public UserActivity(int type, int counter, Double hrmeanPop, Double hrMeanUser) {
         this.type = type;
+        this.counter = counter;
         this.hrmeanPop = hrmeanPop;
         this.hrMeanUser = hrMeanUser;
+    }
+
+    public int getCounter() {
+        return counter;
+    }
+
+    public void setCounter(int counter) {
+        this.counter = counter;
     }
 
     public int getType() {

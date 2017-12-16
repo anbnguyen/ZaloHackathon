@@ -3,6 +3,7 @@ package com.example.kira.zalohackathon.database;
 import android.app.Application;
 
 import com.example.kira.zalohackathon.database.entity.HeartRate;
+import com.example.kira.zalohackathon.database.entity.TempAct;
 import com.example.kira.zalohackathon.database.entity.User;
 import com.example.kira.zalohackathon.database.entity.UserActivity;
 
@@ -44,5 +45,8 @@ public class RealmController {
     }
     public List<HeartRate> get10LatestMeasurement(){
         return realm.where(HeartRate.class).findAllSorted("timeStamp", Sort.DESCENDING).subList(0,10);
+    }
+    public int getCurrentType(){
+        return realm.where(TempAct.class).findAllSorted("id", Sort.DESCENDING).first().getType();
     }
 }
