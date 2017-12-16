@@ -26,8 +26,11 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 import com.example.kira.zalohackathon.TensorFlowClassifier;
+import com.example.kira.zalohackathon.database.RealmController;
+import com.example.kira.zalohackathon.database.entity.User;
 
 import io.github.introml.activityrecognition.R;
+import io.realm.RealmResults;
 
 public class MainActivity extends AppCompatActivity implements SensorEventListener, TextToSpeech.OnInitListener {
 
@@ -48,7 +51,7 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
     private TextToSpeech textToSpeech;
     private float[] results;
     private TensorFlowClassifier classifier;
-
+    RealmController realm;
     private String[] labels = {"Downstairs", "Jogging", "Sitting", "Standing", "Upstairs", "Walking"};
 
     @Override
@@ -61,7 +64,7 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
         x = new ArrayList<>();
         y = new ArrayList<>();
         z = new ArrayList<>();
-
+        testRealmDatabase();
 //        downstairsTextView = (TextView) findViewById(R.id.downstairs_prob);
 //        joggingTextView = (TextView) findViewById(R.id.jogging_prob);
 //        sittingTextView = (TextView) findViewById(R.id.sitting_prob);
@@ -74,7 +77,13 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
         textToSpeech = new TextToSpeech(this, this);
         textToSpeech.setLanguage(Locale.US);
     }
-
+    private void testRealmDatabase() {
+        User user = new User("1","Duy",80.6,190.6,1994,"56465","6554646","Kien");
+        realm = new RealmController(getApplication());
+        realm.update(user);
+        RealmResults<User> userRRs= realm.getByName("Duy");
+        userRRs.get(0);
+    }
     private void Init() {
         MeasureButton = (Button) findViewById(R.id.button);
     }
