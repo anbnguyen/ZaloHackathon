@@ -199,6 +199,7 @@ public class HeartRateMonitor extends Activity {
                 }
                 int beatsAvg = (beatsArrayAvg / beatsArrayCnt);
                 text.setText(String.valueOf(beatsAvg));
+
                 startTime = System.currentTimeMillis();
                 beats = 0;
             }
