@@ -4,4 +4,9 @@
     <string name="heartRate_measure">Heart Rate Measure</string>
     <string name="step_counter">android.hardware.sensor.stepcounter</string>
     <string name="step_detector">android.hardware.sensor.stepdetector</string>
+    <string name="adversite_login">Đơn giản - Chỉ cần 1 chạm \nTiện lợi - Dễ dàng quản lý thông tin cá nhân trên nhiều máy\nVà... Miễn phí</string>
+    <string-array name="language">
+        <item>Việt Nam</item>
+        <item>English</item>
+    </string-array>
 </resources>
