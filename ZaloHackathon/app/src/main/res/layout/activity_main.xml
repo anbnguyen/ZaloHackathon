@@ -6,4 +6,12 @@
     android:layout_height="match_parent"
     tools:context="com.example.kira.zalohackathon.MainActivity">
 
+    <Button
+        android:id="@+id/button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:onClick="Measure"
+        android:text="HeartRate"
+        tools:layout_editor_absoluteX="87dp"
+        tools:layout_editor_absoluteY="31dp" />
 </android.support.constraint.ConstraintLayout>
