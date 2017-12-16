@@ -37,6 +37,8 @@ public class SamsungHealthConnect extends AppCompatActivity {
     private Set<HealthPermissionManager.PermissionKey> mKeySet;
      int count = 0;
      long end_time = 0;
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -75,6 +77,15 @@ public class SamsungHealthConnect extends AppCompatActivity {
                     // Request the permission for reading step counts if it is not acquired
                     pmsManager.requestPermissions(mKeySet, SamsungHealthConnect.this).setResultListener(mPermissionListener);
                 } else {
+                    TimerTask timerTask = new TimerTask() {
+                        @Override
+                        public void run() {
+                            getHeartRateFromSHealth();
+                            Log.d("Count", String.valueOf(count));
+                        }
+                    };
+                    Timer timer = new Timer();
+                    timer.scheduleAtFixedRate(timerTask, 1000, 5000);
                     getHeartRateFromSHealth();
                 }
             } catch (Exception e) {
@@ -153,10 +164,12 @@ public class SamsungHealthConnect extends AppCompatActivity {
                             @Override
                             public void run() {
                                 getHeartRateFromSHealth();
+                                Log.d("Count",String.valueOf(count));
                             }
                         };
                        Timer timer = new Timer();
                        timer.scheduleAtFixedRate(timerTask, 1000, 5000);
+                        getHeartRateFromSHealth();
                     }
                 }
 
@@ -171,7 +184,7 @@ public class SamsungHealthConnect extends AppCompatActivity {
                 .build();
         try {
             resolver.read(request).setResultListener(mListener);
-//            Log.d("Count",String.valueOf(count));
+
         } catch (Exception e) {
             Log.d("ErrorTEST", e.getMessage());
         }
@@ -187,8 +200,6 @@ public class SamsungHealthConnect extends AppCompatActivity {
                     count = data.getInt(HealthConstants.HeartRate.HEART_RATE);
                     end_time = data.getLong(HealthConstants.HeartRate.END_TIME);
                 }
-
-
                 if ( System.currentTimeMillis() - end_time <= 10000){
                     HeartRate heartRate = new HeartRate("1", count ,new Date(end_time), null ,"1" );
                     RealmController realm = new RealmController(getApplication());
