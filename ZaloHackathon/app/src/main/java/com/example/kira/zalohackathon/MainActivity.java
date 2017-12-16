@@ -11,18 +11,36 @@ import android.view.View;
 import android.widget.Button;
 
 import com.example.kira.zalohackathon.HeartRateMeasure.HeartRateMonitor;
+import com.example.kira.zalohackathon.database.RealmController;
+import com.example.kira.zalohackathon.database.entity.User;
+
+import java.util.Date;
+
+import io.realm.Realm;
+import io.realm.RealmResults;
 
 public class MainActivity extends AppCompatActivity {
 
     private static final int MY_PERMISSIONS_REQUEST_READ_CONTACTS = 1;
     Button MeasureButton;
+    RealmController realm;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_setting);
         Init();
         checkPermissions();
+        //testRealmDatabase();
     }
+
+    private void testRealmDatabase() {
+        User user = new User("2","Duy",80.6,190.6,new Date(),"56465","6554646","Kien");
+        realm = new RealmController(getApplication());
+        realm.update(user);
+        RealmResults<User> userRRs= realm.getByName("Duy");
+        userRRs.get(0);
+    }
+
     @Override
     public void onResume(){
         super.onResume();
