@@ -5,6 +5,11 @@
     <string name="step_counter">android.hardware.sensor.stepcounter</string>
     <string name="step_detector">android.hardware.sensor.stepdetector</string>
     <string name="title_activity_heart_rate_monitor">HeartRateMonitor</string>
+    <string name="adversite_login">Đơn giản - Chỉ cần 1 chạm \nTiện lợi - Dễ dàng quản lý thông tin cá nhân trên nhiều máy\nVà... Miễn phí</string>
+    <string-array name="language">
+        <item>Việt Nam</item>
+        <item>English</item>
+    </string-array>
     <!--
     This string is used for square devices and overridden by hello_world in
     values-round/strings.xml for round devices.
