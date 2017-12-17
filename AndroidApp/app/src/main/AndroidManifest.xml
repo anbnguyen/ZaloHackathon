@@ -45,7 +45,9 @@
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.example.kira.zalohackathon.HeartRateMeasure.HeartRateMonitor" />
+
         <activity android:name="com.example.kira.zalohackathon.MonitoringActivity" />
+        <activity android:name="com.example.kira.zalohackathon.MobileHRMeasure" />
         <activity android:name="com.example.kira.zalohackathon.SamsungHealthConnect">
 
         </activity>

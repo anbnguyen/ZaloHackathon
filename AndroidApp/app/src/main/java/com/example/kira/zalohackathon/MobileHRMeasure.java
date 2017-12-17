@@ -47,10 +47,10 @@ public class MobileHRMeasure extends AppCompatActivity {
 
     }
 
-   /* public void Measure(View view){
+    public void Measure(View view){
         Intent HRintent = new Intent(this, HeartRateMonitor.class);
         startActivity(HRintent);
-    }*/
+    }
     public void checkPermissions(){
         if (ContextCompat.checkSelfPermission(this,
                 Manifest.permission.CAMERA)

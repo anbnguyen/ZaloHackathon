@@ -73,9 +73,10 @@
                     android:id="@+id/imageButton7"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    app:srcCompat="@drawable/icn_heart_rate"
+                    android:layout_weight="0.8"
                     android:background="@android:color/transparent"
-                    android:layout_weight="0.8"/>
+                    android:onClick="heartRateMeasure"
+                    app:srcCompat="@drawable/icn_heart_rate" />
 
             </LinearLayout>
 

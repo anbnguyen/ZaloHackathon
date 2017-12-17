@@ -292,6 +292,10 @@ public class MonitoringActivity extends AppCompatActivity implements SensorEvent
         RealmResults<User> userRRs= realm.getByName("Duy");
         userRRs.get(0);
     }
+    public void heartRateMeasure(View view) {
+        Intent intent = new Intent(this, HeartRateMonitor.class);
+        startActivity(intent);
+    }
     private void Init() {
         MeasureButton = (Button) findViewById(R.id.button);
         setting = (ImageButton) findViewById(R.id.btnsetting);
