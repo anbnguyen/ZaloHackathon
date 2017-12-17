@@ -245,6 +245,9 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
         timer.scheduleAtFixedRate(new TimerTask() {
             @Override
             public void run() {
+                Log.d("HeartRate", String.valueOf(heartRateCount));
+                Log.d("EndTime", String.valueOf(end_time));
+                Log.d("NewDay", String.format("%s", System.currentTimeMillis()));
 
 
                 if (results == null || results.length == 0) {
@@ -464,16 +467,7 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
                     if (resultMap.containsValue(Boolean.FALSE)) {
                         Toast.makeText(MainActivity.this, "Failed to get permission", Toast.LENGTH_SHORT).show();
                     } else {
-                        TimerTask timerTask = new TimerTask() {
-                            @Override
-                            public void run() {
-                                getHeartRateFromSHealth();
-                                Log.d("Count",String.valueOf(heartRateCount));
-                            }
-                        };
-                        Timer timer = new Timer();
-                        timer.scheduleAtFixedRate(timerTask, 1000, 5000);
-                        getHeartRateFromSHealth();
+                        isConnectedToSHealth = true;
                     }
                 }
 
@@ -497,17 +491,11 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
     private final HealthResultHolder.ResultListener<HealthDataResolver.ReadResult> mListener = new HealthResultHolder.ResultListener<HealthDataResolver.ReadResult>() {
         @Override
         public void onResult(HealthDataResolver.ReadResult healthData) {
-            heartRateCount = 0;
-            end_time = 0;
             final RealmController realm = new RealmController(getApplication());
             try {
                 for (HealthData data : healthData) {
                     heartRateCount = data.getInt(HealthConstants.HeartRate.HEART_RATE);
                     end_time = data.getLong(HealthConstants.HeartRate.END_TIME);
-
-
-
-
 
                 }
 

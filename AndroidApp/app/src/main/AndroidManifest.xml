@@ -33,9 +33,7 @@
             </intent-filter>
 
         </activity>
-        <activity android:name="com.example.kira.zalohackathon.SamsungHealthConnect">
 
-        </activity>
 
         <meta-data
             android:name="com.samsung.android.health.permission.read"
@@ -48,6 +46,9 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.example.kira.zalohackathon.HeartRateMeasure.HeartRateMonitor" />
         <activity android:name="com.example.kira.zalohackathon.MonitoringActivity" />
+        <activity android:name="com.example.kira.zalohackathon.SamsungHealthConnect">
+
+        </activity>
         <activity android:name="com.example.kira.zalohackathon.SettingActivity"></activity>
     </application>
 
